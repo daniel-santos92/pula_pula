@@ -5,7 +5,7 @@ def init_window():
     if not glfw.init():
         return None
     
-    window = glfw.create_window(800, 600, "Flappy Bird", None, None)
+    window = glfw.create_window(400, 600, "Flappy Bird", None, None)
     if not window:
         glfw.terminate()
         return None
