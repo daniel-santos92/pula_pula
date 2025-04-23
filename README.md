@@ -29,13 +29,6 @@ PULA_PULA/
 │   ├── go.png
 │   ├── ground.png
 │   └── toppipe.png
-├── sfx/
-│   ├── die.wav
-│   ├── flap.wav
-│   ├── hit.wav
-│   ├── score.wav
-│   └── start.wav
-├── venv39/
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
@@ -91,7 +84,6 @@ python game.py
 - Python 3.x
 - PyOpenGL
 - GLFW
-- Pygame
 - Estrutura modular em Programação Orientada a Objetos (POO)
 
 ---
