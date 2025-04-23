@@ -136,6 +136,10 @@ class GameEngine:
         if bird_box[1] <= -0.8:  # Bottom of screen is around -0.4
             return True
             
+        # Check collision with the top of the screen
+        if bird_box[3] >= 1.0:  # Top of screen (y=1.0)
+            return True
+            
         # Check collision with pipes
         for pipe in self.pipes:
             upper_pipe_box = pipe.get_upper_pipe_box()
