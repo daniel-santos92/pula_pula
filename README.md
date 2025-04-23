@@ -55,22 +55,30 @@ PULA_PULA/
 
 ---
 
-## 🚀 Como Executar
+## 🚀 Como Executar o Projeto
 
-1. **Crie um ambiente virtual (opcional):**
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/daniel-santos92/pula_pula.git
+cd pula_pula
+```
+
+### 2. (Opcional) Crie e ative um ambiente virtual
 
 ```bash
 python -m venv venv39
-.env39\Scriptsctivate
+.env39\Scriptsctivate  # Windows
+# source venv39/bin/activate  # Linux/macOS
 ```
 
-2. **Instale as dependências:**
+### 3. Instale as dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Execute o jogo:**
+### 4. Execute o jogo
 
 ```bash
 python game.py
@@ -83,8 +91,8 @@ python game.py
 - Python 3.x
 - PyOpenGL
 - GLFW
-- Pygame (para sons)
-- Estrutura modularizada em POO
+- Pygame
+- Estrutura modular em Programação Orientada a Objetos (POO)
 
 ---
 
@@ -92,4 +100,4 @@ python game.py
 
 ## 🎮 Créditos
 
-Desenvolvido por [Seu Nome Aqui] como projeto de aprendizado e experimentação com jogos 2D em Python.
+Desenvolvido por [Daniel Santos](https://github.com/daniel-santos92), [Victor](https://github.com/victorpazs), [Lucas](https://github.com/LKTeloeken), [Vinícius](https://github.com/2viny) como projeto de aprendizado e experimentação com jogos 2D em Python.
