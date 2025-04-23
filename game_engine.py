@@ -11,6 +11,7 @@ from pipe import Pipe
 from score import Score
 from get_ready_screen import GetReadyScreen
 from game_over_screen import GameOverScreen
+from enemy_bird import EnemyBird
 
 class GameEngine:
     def __init__(self):
@@ -18,11 +19,14 @@ class GameEngine:
         self.bird = None
         self.ground = None
         self.pipes = []  # Lista para armazenar múltiplos canos
+        self.enemy_birds = []  # Lista para armazenar pássaros inimigos
         self.gravity = -7.8
         self.prev_space_key_state = glfw.RELEASE
         self.previous_time = time.time()
         self.pipe_spawn_timer = 0
         self.pipe_spawn_interval = 2.0  # Tempo em segundos entre a criação de novos canos
+        self.enemy_bird_spawn_timer = 0
+        self.enemy_bird_spawn_interval = random.uniform(8.0, 15.0)  # Random interval between 10-15 seconds
         self.upper_pipe_texture = None
         self.lower_pipe_texture = None
         self.game_state = "READY"  # Estados do jogo: "READY", "PLAYING", "GAME_OVER"
@@ -43,6 +47,9 @@ class GameEngine:
             load_texture("img/bird/b0.png")  # Include first frame again for smooth loop
         ]
         self.bird = Bird(bird_textures)
+        
+        # Store the bird textures for enemy birds
+        self.bird_textures = bird_textures
         
         # Load ground texture
         ground_texture = load_texture("img/ground.png")
@@ -77,17 +84,31 @@ class GameEngine:
 
     def reset_game(self):
         # Reset game state to initial values
-        self.bird = Bird(self.bird.texture_ids)
+        self.bird = Bird(self.bird_textures)
         self.pipes = []
+        self.enemy_birds = []
         self.pipe_spawn_timer = 0
+        self.enemy_bird_spawn_timer = 0
+        self.enemy_bird_spawn_interval = random.uniform(10.0, 15.0)
         self.game_state = "READY"
         self.score.reset()
+        # Reset background darkness
+        self.background.darkness_level = 0.0
         
     def spawn_pipe(self):
         # Cria um novo cano no lado direito da tela
         gap_position = Pipe.generate_random_gap()
         new_pipe = Pipe(self.upper_pipe_texture, self.lower_pipe_texture, 1.2, gap_position)
         self.pipes.append(new_pipe)
+        
+    def spawn_enemy_bird(self):
+        # Create a new enemy bird from the right side of the screen
+        new_enemy_bird = EnemyBird(self.bird_textures)
+        self.enemy_birds.append(new_enemy_bird)
+        # Set new random spawn interval for next bird
+        self.enemy_bird_spawn_interval = random.uniform(8.0, 15.0)
+        # Reset the timer so we can spawn another bird after the interval
+        self.enemy_bird_spawn_timer = 0
         
     def process_input(self):
         space_key_state = glfw.get_key(self.window, glfw.KEY_SPACE)
@@ -133,6 +154,15 @@ class GameEngine:
                 bird_box[1] < lower_pipe_box[3] and bird_box[3] > lower_pipe_box[1]):
                 return True
                 
+        # Check collision with enemy birds
+        for enemy_bird in self.enemy_birds:
+            enemy_box = enemy_bird.get_bounding_box()
+            
+            # Check if player bird's bounding box intersects with enemy bird
+            if (bird_box[0] < enemy_box[2] and bird_box[2] > enemy_box[0] and
+                bird_box[1] < enemy_box[3] and bird_box[3] > enemy_box[1]):
+                return True
+                
         return False
         
     def update(self):
@@ -157,6 +187,12 @@ class GameEngine:
                 self.spawn_pipe()
                 self.pipe_spawn_timer = 0
                 
+            # Update enemy bird spawn timer
+            self.enemy_bird_spawn_timer += delta_time
+            if self.enemy_bird_spawn_timer >= self.enemy_bird_spawn_interval:
+                self.spawn_enemy_bird()
+                self.enemy_bird_spawn_timer = 0
+                
             # Atualizar todos os canos existentes
             pipes_to_remove = []
             for pipe in self.pipes:
@@ -166,6 +202,8 @@ class GameEngine:
                 if not pipe.passed and pipe.x_position < self.bird.x_position - self.bird.width:
                     pipe.passed = True
                     self.score.increment()
+                    # Increase darkness when pipe is passed
+                    self.background.increase_darkness(0.1)
                 
                 # Marcar canos que saíram da tela para remoção
                 if pipe.is_off_screen():
@@ -174,6 +212,19 @@ class GameEngine:
             # Remover canos que saíram da tela
             for pipe in pipes_to_remove:
                 self.pipes.remove(pipe)
+                
+            # Update enemy birds
+            enemy_birds_to_remove = []
+            for enemy_bird in self.enemy_birds:
+                enemy_bird.update(delta_time)
+                
+                # Mark enemy birds that left the screen for removal
+                if enemy_bird.is_off_screen():
+                    enemy_birds_to_remove.append(enemy_bird)
+                    
+            # Remove enemy birds that left the screen
+            for enemy_bird in enemy_birds_to_remove:
+                self.enemy_birds.remove(enemy_bird)
                 
             # Check for collisions
             if self.check_collisions():
@@ -194,6 +245,10 @@ class GameEngine:
             for pipe in self.pipes:
                 pipe.draw()
                 
+            # Draw enemy birds
+            for enemy_bird in self.enemy_birds:
+                enemy_bird.draw()
+                
             self.ground.draw()
             self.bird.draw()
             self.score.draw()
@@ -201,6 +256,10 @@ class GameEngine:
             # No estado GAME_OVER, desenha todos os elementos congelados e a imagem de game over
             for pipe in self.pipes:
                 pipe.draw()
+                
+            # Draw enemy birds
+            for enemy_bird in self.enemy_birds:
+                enemy_bird.draw()
                 
             self.ground.draw()
             self.bird.draw()
