@@ -1,0 +1,43 @@
+PULA_PULA/
+├── __pycache__/
+├── assets/
+│   ├── background.png
+│   └── bird.png
+├── img/
+│   ├── bird/
+│   │   ├── b0.png
+│   │   ├── b1.png
+│   │   └── b2.png
+│   ├── ground/
+│   │   ├── g0.png
+│   │   └── g1.png
+│   ├── tap/
+│   │   ├── t0.png
+│   │   └── t1.png
+│   ├── BG.png
+│   ├── botpipe.png
+│   ├── getready.png
+│   ├── go.png
+│   ├── ground.png
+│   └── toppipe.png
+├── sfx/
+│   ├── die.wav
+│   ├── flap.wav
+│   ├── hit.wav
+│   ├── score.wav
+│   └── start.wav
+├── .gitignore
+├── README.md
+├── requirements.txt
+├── background.py
+├── bird.py
+├── enemy_bird.py
+├── game_engine.py
+├── game_over_screen.py
+├── game.py
+├── get_ready_screen.py
+├── ground.py
+├── pipe.py
+├── renderer.py
+├── score.py
+└── texture.py
