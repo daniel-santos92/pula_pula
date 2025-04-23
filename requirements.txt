@@ -1,4 +1,5 @@
 glfw
 PyOpenGL
+PyOpenGL_accelerate
 Pillow
-numpy 
+numpy
