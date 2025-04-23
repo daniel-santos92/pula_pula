@@ -98,7 +98,7 @@ class GameEngine:
     def spawn_pipe(self):
         # Cria um novo cano no lado direito da tela
         gap_position = Pipe.generate_random_gap()
-        new_pipe = Pipe(self.upper_pipe_texture, self.lower_pipe_texture, 1.2, gap_position)
+        new_pipe = Pipe(self.upper_pipe_texture, self.lower_pipe_texture, 1.2, gap_position, self.score)
         self.pipes.append(new_pipe)
         
     def spawn_enemy_bird(self):
@@ -183,6 +183,10 @@ class GameEngine:
         
         # Somente atualiza o jogo se estiver no estado PLAYING
         if self.game_state == "PLAYING":
+            # Update speed multiplier based on score
+            new_multiplier = 1.0 + (self.score.value // 5) * 0.1
+            self.speed_multiplier = min(new_multiplier, 2.0)  # Cap at 2x speed
+            
             self.bird.update(delta_time, self.gravity)
             
             # Atualizar o timer para geração de canos
@@ -200,7 +204,7 @@ class GameEngine:
             # Atualizar todos os canos existentes
             pipes_to_remove = []
             for pipe in self.pipes:
-                pipe.update(delta_time)
+                pipe.update(delta_time, self.speed_multiplier)
                 
                 # Verificar se o pássaro passou pelo cano e ainda não foi contabilizado
                 if not pipe.passed and pipe.x_position < self.bird.x_position - self.bird.width:

@@ -2,7 +2,7 @@ from OpenGL.GL import *
 import random
 
 class Pipe:
-    def __init__(self, upper_texture_id, lower_texture_id, x_position, gap_position=0.0):
+    def __init__(self, upper_texture_id, lower_texture_id, x_position, gap_position=0.0, score=0):
         self.upper_texture_id = upper_texture_id
         self.lower_texture_id = lower_texture_id
         self.x_position = x_position
@@ -10,12 +10,17 @@ class Pipe:
         self.height = 0.7
         self.width = 0.15
         self.gap_size = 0.4  # Tamanho FIXO da abertura entre os canos
-        self.speed = 0.5  # Velocidade de movimento do cano
+        self.gap_size = 0.4    # Tamanho FIXO da abertura entre os canos
         self.passed = False  # Indica se o pássaro já passou por este cano
+        self.score = score
+        self.base_speed = 0.5  # Velocidade base dos canos
+        self.max_speed = 3.0  # Velocidade máxima dos canos
+        self.speed_multiplier = 0.1  # Multiplicador de velocidade dos canos
         
-    def update(self, delta_time):
+    def update(self, delta_time, speed_multiplier=1.0):
         # Move o cano para a esquerda (valores negativos de x)
-        self.x_position -= self.speed * delta_time
+        # A velocidade é ajustada com base no multiplicador de velocidade
+        self.x_position -= self.base_speed * min(speed_multiplier + self.score.value, self.max_speed) * delta_time
         
     def is_off_screen(self):
         # Verifica se o cano saiu completamente da tela pela esquerda
