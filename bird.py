@@ -29,7 +29,7 @@ class Bird:
             self.last_frame_change = current_time
             
     def jump(self):
-        self.speed = 2.0
+        self.speed = 1.7
 
     def draw(self):
         glEnable(GL_TEXTURE_2D)
@@ -51,3 +51,11 @@ class Bird:
         glEnd()
 
         glDisable(GL_TEXTURE_2D)
+        
+    def get_bounding_box(self):
+        # Return a tuple (left, bottom, right, top) for collision detection
+        left = self.x_position - self.width
+        bottom = -0.4 + self.height
+        right = self.x_position + self.width
+        top = -0.4 + self.sprite_height + self.height
+        return (left, bottom, right, top)

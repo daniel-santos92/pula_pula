@@ -11,6 +11,7 @@ class Pipe:
         self.width = 0.15
         self.gap_size = 0.4  # Tamanho FIXO da abertura entre os canos
         self.speed = 0.5  # Velocidade de movimento do cano
+        self.passed = False  # Indica se o pássaro já passou por este cano
         
     def update(self, delta_time):
         # Move o cano para a esquerda (valores negativos de x)
@@ -71,3 +72,17 @@ class Pipe:
         glEnd()
         
         glDisable(GL_TEXTURE_2D)
+        
+    def get_upper_pipe_box(self):
+        # Bounding box for the upper pipe (left, bottom, right, top)
+        half_gap = self.gap_size / 2
+        upper_pipe_bottom = self.gap_position + half_gap
+        return (self.x_position - self.width, upper_pipe_bottom, 
+                self.x_position + self.width, 1.0)
+                
+    def get_lower_pipe_box(self):
+        # Bounding box for the lower pipe (left, bottom, right, top)
+        half_gap = self.gap_size / 2
+        lower_pipe_top = self.gap_position - half_gap
+        return (self.x_position - self.width, -1.0, 
+                self.x_position + self.width, lower_pipe_top)
