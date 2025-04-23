@@ -100,4 +100,4 @@ python game.py
 
 ## 🎮 Créditos
 
-Desenvolvido por [Daniel Santos](https://github.com/daniel-santos92), [Victor](https://github.com/victorpazs), [Lucas](https://github.com/LKTeloeken), [Vinícius](https://github.com/2viny) como projeto de aprendizado e experimentação com jogos 2D em Python.
+Desenvolvido por [Victor](https://github.com/victorpazs), [Lucas](https://github.com/LKTeloeken), [Vinícius](https://github.com/2viny), [Daniel Santos](https://github.com/daniel-santos92) como projeto de aprendizado e experimentação com jogos 2D em Python.
