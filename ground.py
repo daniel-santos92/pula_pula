@@ -3,9 +3,9 @@ from OpenGL.GL import *
 class Ground:
     def __init__(self, texture_id):
         self.texture_id = texture_id
-        self.position = -1.2  # Position at the bottom of the screen
-        self.width = 1.0       # Cover the entire width of screen
-        self.height = 0.4     # Height of the ground
+        self.position = -1.2  # Posicionar no fundo da tela
+        self.width = 1.0       # Cobrir a largura total da tela
+        self.height = 0.4     # altura do solo
         
     def draw(self):
         glEnable(GL_TEXTURE_2D)
